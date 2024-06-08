@@ -186,6 +186,13 @@ class MyTabView(CTkTabview):
                 CTkLabel(tab_of_window.tab(tab_of_window.namesOfResultsTabs[i]),
                              text="%.4f" %tab_of_window.listOfRes[i][j], font=("default", 18)).grid(row=j+3, column=1, sticky="n", padx=5)
 
+        CTkButton(tab_of_window.tab(tab_of_window.namesOfResultsTabs[len(tab_of_window.namesOfResultsTabs)-1]),
+                  text='Сохранить результаты в файл',
+                  font=("default", 14), command=tab_of_window.controller._create_file).grid(sticky="n", padx=5)
+        CTkButton(tab_of_window.tab(tab_of_window.namesOfResultsTabs[len(tab_of_window.namesOfResultsTabs)-1]),
+                  text='Сохранить исходные данные в файл',
+                  font=("default", 14), command=tab_of_window.controller._create_file_start).grid(sticky="n", padx=5)
+
 class App(CTk):
     def __init__(self):
         super().__init__()
