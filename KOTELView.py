@@ -1,11 +1,15 @@
 import KOTELController
 import KOTELModel
 #Импорт билиотек
+import math
 from customtkinter import *
 #Настройки цветовой гаммы
 set_appearance_mode("light")  # Modes: system (default), light, dark
 set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 #Функция глобальной кнопки ввода
+textCheck = 'Химический состав топлива введен верно'
+nameOfTab1 = "Исходные данные: состав топлива"
+nameOfTab2 = "Исходные данные: параметры"
 class MyTabView(CTkTabview):
     def __init__(tab_of_window, master, **kwargs):
         super().__init__(master, **kwargs)
@@ -43,17 +47,29 @@ class MyTabView(CTkTabview):
                   'Количество золы в топливе, A, %',
                   'Количество влаги в топливе, W, %']
         tab_of_window.add(nameOfTab1)
-        tab_of_window.tab(nameOfTab1).grid_rowconfigure(7, weight=1)
+        tab_of_window.tab(nameOfTab1).grid_rowconfigure(len(list_1) + 1, weight=1)
         tab_of_window.tab(nameOfTab1).grid_columnconfigure((0, 10), weight=1)
         for i in range(len(list_1)):
             CTkLabel(tab_of_window.tab(nameOfTab1),
                      text=list_1[i], font=("default", 18)).grid(row=i, column=0, sticky="n", padx=5)
-            tab_of_window.Block1_enter.append(CTkEntry(tab_of_window.tab(nameOfTab1)))
-            tab_of_window.Block1_enter[i].grid(row=i, column=1, sticky="n")
-        tab_of_window.label = CTkLabel(tab_of_window.tab(nameOfTab1),
-                 text="",
-                 font=("default", 18))
-        tab_of_window.label.grid(row=len(list_1) + 2, column=0, sticky="n", padx=5)
+            textBox = CTkEntry(tab_of_window.tab(nameOfTab1))
+            if i == 0:
+                try:
+                    textBox.insert(0, int(tab_of_window.data["Unnamed: 1"][i]))
+                except Exception:
+                    textBox.insert(0, '')
+            else:
+                try:
+                    if (not math.isnan(float(tab_of_window.data["Unnamed: 1"][i]))):
+                        textBox.insert(0, float(tab_of_window.data["Unnamed: 1"][i]))
+                except Exception:
+                    textBox.insert(0, '')
+                else:
+                    textBox.insert(0, '')
+            tab_of_window.Block1_enter.append(textBox)
+            tab_of_window.Block1_enter[i].grid(row=i, column=1)
+
+        #tab_of_window.label.grid(row=len(list_1) + 2, column=0, sticky="n", padx=5)
         CTkButton(tab_of_window.tab(nameOfTab1), text="Сохранить состав топлива",
                   font=("default", 18), command=tab_of_window._kotel_parameters2).grid(
             row=len(list_1), column=1, sticky="n")
@@ -61,8 +77,6 @@ class MyTabView(CTkTabview):
     def _kotel_parameters2(tab_of_window):
 
         tab_of_window.controller.Enter_Block1()
-        nameOfTab1 = "Исходные данные: состав топлива"
-        nameOfTab2 = "Исходные данные: параметры"
         list_1 = ['Количество углерода в топливе, C, %', 'Количество водорода в топливе, H, %',
                   'Количество кислорода в топливе, O, %',
                   'Количество азота в топливе, N, %',
@@ -87,24 +101,39 @@ class MyTabView(CTkTabview):
         except Exception:
             pass
         if (tab_of_window.check):
-            tab_of_window.label.configure(text = "")
-            textCheck = 'Химический состав топлива введен верно'
             tab_of_window.add(nameOfTab2)
             tab_of_window.tab(nameOfTab2).grid_rowconfigure(7, weight=1)
             tab_of_window.tab(nameOfTab2).grid_columnconfigure((0, 10), weight=1)
             for i in range(len(list_2)):
                 CTkLabel(tab_of_window.tab(nameOfTab2),
                          text=list_2[i], font=("default", 18)).grid(row=i, column=0, sticky="n", padx=5)
-                tab_of_window.Block2_enter.append(CTkEntry(tab_of_window.tab(nameOfTab2)))
-                tab_of_window.Block2_enter[i].grid(row=i, column=1, sticky="n")
+                textBox = CTkEntry(tab_of_window.tab(nameOfTab2))
+                if i == 0:
+                    try:
+                        textBox.insert(0, int(tab_of_window.data["Unnamed: 4"][i]))
+                    except Exception:
+                        textBox.insert(0, '')
+                else:
+                    try:
+                        if (not math.isnan(float(tab_of_window.data["Unnamed: 4"][i]))):
+                            textBox.insert(0, float(tab_of_window.data["Unnamed: 4"][i]))
+                    except Exception:
+                        textBox.insert(0, '')
+                    else:
+                        textBox.insert(0, '')
+                tab_of_window.Block2_enter.append(textBox)
+                tab_of_window.Block2_enter[i].grid(row=i, column=1)
             CTkButton(tab_of_window.tab(nameOfTab2), text="Начать расчет",
                       font=("default", 18), command=tab_of_window.print_results).grid(
                 row=len(list_2), column=1, sticky="n")
         else:
             textCheck = 'Химический состав топлива введен неверно'
-        tab_of_window.label.configure(text=textCheck)
+
 
     def print_results(tab_of_window):
+
+        CTkLabel(tab_of_window.tab(nameOfTab2),
+                 text=textCheck, font=("default", 18)).grid(sticky="s", padx=5)
         tab_of_window.controller.Enter_Block2()
         tab_of_window.controller.start_calc()
         tab_of_window.controller.Results()
@@ -155,7 +184,7 @@ class MyTabView(CTkTabview):
                 CTkLabel(tab_of_window.tab(tab_of_window.namesOfResultsTabs[i]),
                              text=listOfNamesOfListsForPrint[i][j], font=("default", 18)).grid(row=j+3, column=0, sticky="n", padx=5)
                 CTkLabel(tab_of_window.tab(tab_of_window.namesOfResultsTabs[i]),
-                             text=tab_of_window.listOfRes[i][j], font=("default", 18)).grid(row=j+3, column=1, sticky="n", padx=5)
+                             text="%.4f" %tab_of_window.listOfRes[i][j], font=("default", 18)).grid(row=j+3, column=1, sticky="n", padx=5)
 
 class App(CTk):
     def __init__(self):

@@ -122,7 +122,7 @@ class KOTELController:
                                           filetypes=filetypes)
             file = pd.ExcelFile(filename)
             self.view.data = pd.read_excel(file)
-        self.view._demonstrate_data_from_file_cylinder_parameters()
+        self.view._kotel_parameters()
 
 
     def start_calc(self):

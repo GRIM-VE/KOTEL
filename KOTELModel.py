@@ -169,7 +169,7 @@ class KOTEL:
         i_sum_ = round(i_sum, 4)
         V_L = float(((Ld_BB - L0_BB) / V_d) * 100)
         V_L_ = round(V_L, 2)
-        self.__results = [V_O2_, L0_CB_,
+        self.__results =  [V_O2_, L0_CB_,
                           L0_BB_, Ld_BB_, V0_CO2_, V0_SO2_, V0_H2O_,
                           V0_N2_, V0_, Vd_CO2_, Vd_SO2_, Vd_H2O_,
                           Vd_N2_, V_O2_izb_, V_d_, Q_H_P_, i_x_,
