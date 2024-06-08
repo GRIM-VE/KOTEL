@@ -218,4 +218,4 @@ class KOTELController:
 
         directoryname = fd.askdirectory(title="Сохранить файл в папке", initialdir="/")
         df1 = pd.DataFrame(df_list_cyl)
-        df1.to_excel(directoryname+"/Исходные_данные_TISP.xlsx",startrow=1, header=False, index=False)
+        df1.to_excel(directoryname+"/Исходные_данные_KOTEL.xlsx",startrow=1, header=False, index=False)
